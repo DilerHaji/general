@@ -1,0 +1,125 @@
+############### Regular expressions ###############
+
+
+# parses out identifier before underscore 
+^([^_]*)\w
+
+## deletes character 0 to ?? in file names 
+## ${f:5:1} means start at 5th character and delete 1 after it 
+for f in *; do mv $f ${f/${f:5:1}/}; done
+
+
+## deletes a specific character or set of characters from each file name
+for file in *; do echo "$file" | tr -d _ | mv "${file}" done
+
+## Make group for Janton magicicada gut dataset 
+make.group(fasta=1Nsoil.fasta-A3Nsoil.fasta-B2Nsoil.fasta-C1Nsoil.fasta-HTC3N.fasta-A2N.6.fasta-A4N.1.fasta-B3Nsoil.fasta-C2Nrectum.fasta-S1soil.fasta-A2N.7.fasta-A4Nsoil.fasta-Bsoil.fasta-C2Nsac.fasta-Soil1.fasta-A2Nsoil.fasta-B1Nsmtube.fasta-C1N.12.fasta-C2Nsmtube.fasta-A3N.fasta-B1Nsoil.fasta-C1N.2.fasta-C2Nsoil.fasta-A3Nb.fasta-B2NHT.fasta-C1NLgtube.fasta-CNSoil.fasta-A3Nc.fasta-B2Nsmtube.fasta-C1Nsmtube.fasta-HC3N.fasta-DRC3N.fasta, groups=1Nsoil-A3Nsoil-B2Nsoil-C1Nsoil-HTC3N-A2N.6-A4N.1-B3Nsoil-C2Nrectum-S1soil-A2N.7-A4Nsoil-Bsoil-C2Nsac-Soil1-A2Nsoil-B1Nsmtube-C1N.12-C2Nsmtube-A3N-B1Nsoil-C1N.2-C2Nsoil-A3Nb-B2NHT-C1NLgtube-CNSoil-A3Nc-B2Nsmtube-C1Nsmtube-HC3N-DRC3N)
+
+
+# Turns fasta with multiple-line sequence to single line sequence for each entry
+awk '!/^>/ { printf "%s", $0; n = "\n" } /^>/ { print n $0; n = "" } END { printf "%s", n }' janton.fasta > janton2.fasta
+
+
+## Loops over txt file of sample names and creates a new file for each sample name matched to original dataset 
+while read p; do grep $p -A 1 janton2.fasta | grep -v '^--$' > ${p}.fasta; done < id.txt
+
+
+echo 'hd_ma_prod_customer_ro:*:123456789:john.doe' | sed 's/.*://'
+
+for file in *; do echo "$file" | sed 's/.*.//'
+
+for file in *gz; do echo "$file" | sed 's/\./\:/' | mv "${file}" done 
+
+
+# Convert RNA to DNA
+sed '/^[^>]/ y/uU/tT/' SILVA_132_SSURef_Nr99_tax_silva.fasta > silva.fasta
+
+
+# Deletes dots 
+sed -e 's/\.//g' tst.fas > t2.f
+
+# Deletes dashes
+sed s/-//g tst.fas > t2.f
+
+# gets just seq headers
+grep "^>" nnn.f 
+
+# add something to seq headers 
+sed 's/>.*/&WHATEVERYOUWANT/' file.fa > outfile.fa
+
+# print just a specific column of seq headers 
+awk '{print $1}' file.fa > output.fa
+
+
+
+
+
+############### read mapping ###############
+
+module load bwa
+module load samtools
+module load bedtools
+bwa index result.fas
+bwa mem ./result.fas ../I6926_M.fastq > samfile
+samtools view -bS samfile > test.bam
+#pip install pyfaidx --user
+faidx --transform bed ./result.fas > file.bed
+bedtools coverage -a file.bed -b test.bam -d
+
+
+
+
+
+############### Trees ###############
+
+collapse_nodes <- function(t1, threshold){
+  for (i in 1:t1$Nnode){
+    #print (i)
+    if (!is.na(as.numeric(t1$node.label[i])) & as.numeric(t1$node.label[i])<threshold){
+      t1$edge.length[t1$edge[,1] == length(t1$tip.label)+i] <- t1$edge.length[t1$edge[,1] == length(t1$tip.label)+i] + t1$edge.length[which(t1$edge[,2] == length(t1$tip.label)+i)]
+      t1$edge.length[which(t1$edge[,2] == length(t1$tip.label)+i)] <- 0
+    }
+  }
+  t2 <- di2multi(t1)
+  return(t2)
+}
+
+
+
+
+
+
+
+############### Savio cluster ###############
+
+sinfo --summarize
+
+check_usage.sh -E -u diler
+check_usage.sh -a ac_flyminer
+
+sinfo --usage 5290389
+
+
+#savio_hpc for jobs requiring less than 24 CPUS in one node 
+
+
+
+
+
+
+############# Conda environments ##############
+
+conda info --env
+
+source activate qiime2-2019.10
+
+
+
+
+########### Xanadu Cluster ################
+
+srun --partition=general --qos=general --mem=200M --pty bash
+
+
+
+l
