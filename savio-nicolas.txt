@@ -1,0 +1,149 @@
+Parallelizing Jobs
+
+Prepare a taskfile #List of jobs to run in a batch script
+
+nano compute.sh
+
+compute.py 
+compute.py
+compute.py
+
+Prepare a dispatch file #The job file which runs jobs in your taskfile using the ht_helper.sh script
+
+nano dispatch.sh
+
+#!/bin/bash
+# Job name:
+#SBATCH --job-name=readgroup
+#SBatch --account=co_rosalind
+#SBATCH --partition=savio
+#SBATCH --ntasks-per-node=20
+#SBATCH --cpus-per-node=1
+#SBATCH --nodes=1
+#SBATCH --time=72:00:00
+
+module load gcc/4.8.5 openmpi # or module load intel openmpi (required for ht_helper.sh to run) 
+
+ht_helper.sh -m "cat openblas/0.2.20,python/3.6,fftw/3.3.7,gcc/6.3.0,gsl/2.0" -t taskfile #(calls ht_helper.sh)
+
+#-m is for modules needed, -t is for the taskfile which contains the tasks
+
+The partition has a finite number of nodes
+For example, some partitions include savio or savio2
+
+Each node has a limited number of CPUS which run your jobs
+For example, Savio has 20 and Savio2 has 24
+
+If I have a taskfile that has 20 independent commands, I can run on savio and dedicate a different CPU in 1 node to each task.
+In this case, we dedicate 1 CPU per task.
+#This is a very important point because unless you designate the number of CPUS in a dispatch file, 
+#you will be charged for all 20-24 CPUs in that node even if you're using one.
+
+So let's generate a taskfile and a dispatch file as an example:
+
+To first generate a long list of the many tasks you may need to run:
+1. Make a list of prefixes for all the files you wish to make commands for
+2. Make a list of commands using these prefixes
+3. Split a list of tasks among multiple batch files
+4. Run a for loop to automate a different taskfile for each submission of the dispatch file
+
+
+1. Make a list of prefixes for all the files you wish to make commands for
+
+ls * | cut -f 1 -d "." > samples.list
+
+This generates a list of all files in the folder and lists only the characters up to the period.
+
+Example: 
+AL-5-28-1_S10_L001_.sort.sorted_duplicates.bam
+AL-5-28-2_S67_L004_.sort.sorted_duplicates.bam
+AL-5-29-1_S6_L001_.sort.sorted_duplicates.bam
+AL-5-29-2_S7_L001_.sort.sorted_duplicates.bam
+AL-5-29-3_S8_L001_.sort.sorted_duplicates.bam
+AL-5-29-4_S9_L001_.sort.sorted_duplicates.bam
+AL-6-11-1_S43_L004_.sort.sorted_duplicates.bam
+AL-6-11-2_S69_L004_.sort.sorted_duplicates.bam
+
+Becomes 
+
+AL-5-28-1_S10_L001_
+AL-5-28-2_S67_L004_
+AL-5-29-1_S6_L001_
+AL-5-29-2_S7_L001_
+AL-5-29-3_S8_L001_
+AL-5-29-4_S9_L001_
+AL-6-11-1_S43_L004_
+AL-6-11-2_S69_L004_
+
+
+2. Make a list of commands using these prefixes
+
+Use samples.list as an input file
+"j" is the prefix in the samples.list
+
+while read j; do echo "picard AddOrReplaceReadGroups I=${j}.sort.bam O=${j}.reheaded.bam"; done < samples.list > listofcommands.txt
+
+This outputs 317 lines of separate commands for each of my 317 samples
+
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-5-28-1_S10_L001_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-5-28-1_S10_L001_.reheaded.bam 
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-5-28-2_S67_L004_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-5-28-2_S67_L004_.reheaded.bam 
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-5-29-1_S6_L001_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-5-29-1_S6_L001_.reheaded.bam 
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-5-29-2_S7_L001_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-5-29-2_S7_L001_.reheaded.bam 
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-5-29-3_S8_L001_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-5-29-3_S8_L001_.reheaded.bam 
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-5-29-4_S9_L001_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-5-29-4_S9_L001_.reheaded.bam 
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-11-1_S43_L004_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-11-1_S43_L004_.reheaded.bam 
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-11-2_S69_L004_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-11-2_S69_L004_.reheaded.bam 
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-11-3_S143_L004_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-11-3_S143_L004_.reheaded.bam
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-11-4_S210_L004_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-11-4_S210_L004_.reheaded.bam
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-11-6_S266_L004_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-11-6_S266_L004_.reheaded.bam
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-13-1_S68_L004_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-13-1_S68_L004_.reheaded.bam 
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-13-3_S53_L004_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-13-3_S53_L004_.reheaded.bam 
+picard AddOrReplaceReadGroups I=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-13-4_S154_L004_.sort.sorted_duplicates.bam O=/global/scratch/nalexandre/gwas/reheadedbams/AL-6-13-4_S154_L004_.reheaded.bam
+.....
+
+We can't run all 317 of these in a single task file or dispatch file. So let's split this long list into multiple taskfiles; 
+each 20-24 tasks long depending on whether you are using Savio or Savio2
+
+3. Split a list of tasks among multiple batch files
+
+Example:
+Split 20 of these per task file
+split -l 20 -d 2 listofcommands.txt command
+
+This says split my long list into multiple different files in multiples of 20
+Now I have 15 or so files like so:
+
+ls command* -1
+
+command00
+command01
+command02
+command03
+command04
+...
+
+4. Run a for loop to automate a different taskfile for each submission of the dispatch file
+
+Create this dispatch.sh script:
+
+#!/bin/bash
+# Job name:
+#SBATCH --job-name=command
+#SBatch --account=ac_flyminer
+#SBATCH --partition=savio
+#SBATCH --ntasks-per-node=20
+#SBATCH --cpus-per-task=20
+#SBATCH --nodes=1
+#SBATCH --time=72:00:00
+
+module load gcc/4.8.5 openmpi
+
+ht_helper.sh -t $1  #$1 will be where the taskfile varies in each dispatch submission.
+
+Now run this in the command line in order to submit a dispatch file for each of the taskfiles you generated above.
+
+#Run this in command line
+
+for i in command*; do sbatch dispatch.sh $i;done
+
+

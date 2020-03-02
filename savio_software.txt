@@ -1,0 +1,120 @@
+------------------------ /global/software/sl-7.x86_64/modfiles/langs ------------------------
+clang/3.9.1               gcc/5.4.0                 julia/1.0.3
+cuda/10.0                 gcc/6.3.0(default)        python/2.7
+cuda/7.5                  gcc/7.4.0                 python/3.5
+cuda/8.0                  intel/2016.4.072(default) python/3.6
+cuda/9.0(default)         intel/2018.1.163          r/3.2.5
+cuda/9.1                  java/1.8.0_121            r/3.4.2
+gcc/4.8.5                 julia/0.5.0               ruby/2.4.0
+
+------------------------ /global/software/sl-7.x86_64/modfiles/tools ------------------------
+arpack-ng/3.4.0         leveldb/1.19            paraview/5.1.2
+bazel/0.4.4             libxaw3d/1.6.2          protobuf/3.2.0
+cmake/3.7.2             llvm/3.9.1              qt/5.4.2
+eigen/3.3.3             lmdb/0.9.19             snappy/1.1.4
+emacs/25.1              mathematica/11.0        suitesparse/4.5.4
+gflags/2.2.0            mathematica/11.1        swig/3.0.12
+git/2.11.1              matlab/r2016b           szip/2.1.1
+globus/6.0.1478289945   matlab/r2017b(default)  texlive/2016
+glog/0.3.4              matlab/r2019a           vim/7.4
+gnu-parallel/2019.03.22 mercurial/4.1           visit/2.12.0
+gnuplot/5.0.5           nano/2.7.4              xkbcommon/0.7.1
+gv/3.7.4                octave/4.2.0            xpdf/3.04
+imagemagick/7.0.4-7     opencv/3.2.0
+
+------------------------ /global/software/sl-7.x86_64/modfiles/apps -------------------------
+bio/blast/2.6.0               ml/mxnet/0.9.3-py36           ml/torch/torch7
+bio/bowtie2/2.3.0             ml/mxnet/0.9.3-r-3.2.5        ms/cp2k/4.1-cuda
+bio/picard/2.9.0              ml/tensorflow/1.0.0-py27      ms/cp2k/4.1-mpi
+bio/samtools/1.4              ml/tensorflow/1.0.0-py35      ms/gromacs/5.1.4-cuda
+bio/vcftools/0.1.15           ml/tensorflow/1.0.0-py36      ms/gromacs/5.1.4-mpi
+env/bce/current               ml/tensorflow/1.12.0-cpu-py36 ms/lammps/17Nov16-mpi
+ml/caffe/rc5                  ml/tensorflow/1.12.0-py36     ms/namd/2.12-cuda
+ml/cntk/2.0.beta15-py27       ml/tensorflow/1.7.0-py27      ms/namd/2.12-mpi
+ml/cntk/2.0.beta15-py35       ml/tensorflow/1.7.0-py35      ms/nwchem/6.6-mpi
+ml/mxnet/0.9.3-py27           ml/tensorflow/1.7.0-py36      ms/qe/6.1-mpi
+ml/mxnet/0.9.3-py35           ml/tensorflow/2.0.0b1-py36
+
+-------------------- /global/home/groups/consultsw/sl-7.x86_64/modfiles ---------------------
+C/bdwgc/7.2-gcc.6.3.0                   lapack/3.8.0
+C/guile/2.2.2-gcc.6.3.0                 libgd/2.2.4
+C/libmatheval/1.1.11-gcc.6.3.0-no.guile libpng/1.6.34
+C/libunistring/0.9.7-gcc.6.3.0          libsndfile/1.0.28
+alsa-lib/1.1.9                          make/4.1.90
+at-spi2-atk/2.26.1                      mariadb/10.3.15
+at-spi2-core/2.26.2                     mcl/14.137
+atk/2.26.1                              meme/4.12.0
+augustus/3.2.1                          meson/0.51.2
+augustus/3.3                            ml/h2o/current-r-3.4.2
+bamtools/2.4.0                          ml/superlearner/current-r-3.4.2
+bamtools/2.5.1                          mosek/8
+bazel/0.8.1                             mothur/1.40.5
+bazel/0.9.0                             mpfr/4.0.2
+bcftools/1.6                            ms/lammps/16Mar18
+bedtools/2.28.0                         msmc-tools/2.1.2
+blacs/1.0                               msmc2/2.1.2
+blas/3.8.0                              ncl/6.4.0-intel
+blast/2.2.31+                           netcat/0.7.1
+blast/2.7.1+                            openblas/0.2.20
+boost/1.62.0                            orthomcl/2.0.9
+boost/1.66.0                            pear/0.9.11
+boost/1.72.0-mpi                        perl-dbi/1.640
+bowtie2/2.3.4.1                         plink/1.07
+braker2/2.10                            pplacer/1.1.alpha17
+busco/2018-02-12-py36                   prodigal/2.6.3
+bwa/0.7.17                              proj/4.9.3
+caffe-gpu-singularity/0.3               pygame/1.9.6
+cairo/1.14.10                           pyscf/1.4.6-py36
+cap3/02-10-15                           python/3.5-consultsw
+carla/0.8.2                             pytorch/0.3.1-py3.5-cuda9.0
+checkm/1.0.13                           pytorch/0.4.0-py36-cuda9.0
+cmake/3.15.1                            pytorch/1.0.0-py36-cuda9.0
+cuDNN/7.1                               qiime2/2018.6
+cudnn/7.0.5                             qiime2/2018.6-old
+cudnn/7.0.5-cuda9.0                     qiime2/2019.4
+cufflinks/2.2.1                         quantumespresso/6.2.1
+cutadapt/2.4                            quantumespresso/6.3
+deseq2/r-3.4                            quantumespresso/6.4.1-qmcpack
+epoxy/1.4.3                             r/3.5.1
+fastqc/0.11.7                           r-packages/default
+fftw/3.3.7                              r-spatial/2018-07-25-r34(default)
+firefox/67.0                            r-spatial/2018-12-05-r35
+fox-toolkit/1.6.57                      raxml/8.2.11
+freetype/2.8.1                          rclone/1.42(default)
+gcc/4.9.4                               rclone/2019-12-16-beta
+gcc/6.4.0                               revbayes/1.0.11
+gcc/8.3.0                               rgdal/1.2-16
+gdal/2.2.3                              rstudio-server-singularity/0.3
+genemark-es-et/4.33                     samtools/1.8
+genomethreader/1.7.0                    scalapack/2.0.2
+geos/3.6.2                              sdl/1.2.15
+git-lfs/2.3.4                           siesta/4.0.1
+glfw/3.2.1                              smcpp/1.15.2
+gmp/6.1.2                               sp/1.2-5
+gpg-error/1.27                          spark/2.2.1
+grass/7.2.2                             spglib/1.10.3
+gsl/2.0                                 sqlite/3.25.2
+gtk+/3.20.10                            stdc/5.0.7
+gurobi/7.5.2                            svtoolkit/2.00.1774
+hdf5/1.10.5                             tensorflow/1.10.0-py36-pip-cpu
+hisat2/2.1.0                            tensorflow/1.10.0-py36-pip-gpu
+hmmer/3.1b2                             tensorflow/1.11.0-py36-pip-gpu
+htop/2.2.0                              tensorflow/1.12.0-py36-pip-gpu
+htseq/0.9.1                             tensorflow/1.4.1-py35-gpu
+imagemagick/7.0.8-29                    tensorflow/1.5.0-py35-gpu
+intltool/0.51.0                         tensorflow/1.5.0-py35-pip-gpu
+jack/0.125.0                            tensorflow/1.7.0-py27-pip-cpu
+jasper/2.0.14                           tensorflow/1.7.0-py35-pip-cpu
+julia/0.6.1                             tensorflow/1.7.0-py36-pip-cpu
+julia/0.7.0                             tensorflow-gpu-singularity/0.3
+julia/1.0.0(default)                    xerces-c/3.2.2
+julia/1.1.0                             zlib/1.2.11
+lapack/3.5.0
+
+---------------------- /global/software/sl-7.x86_64/modfiles/gcc/6.3.0 ----------------------
+antlr/2.7.7-gcc         hdf5/1.8.18-gcc-p       ncview/2.1.7-gcc
+berkeley_upc/2.24.0-gcc hdf5/1.8.18-gcc-s       netcdf/4.4.1.1-gcc-p
+boost/1.63.0-gcc        mkl/2016.4.072          netcdf/4.4.1.1-gcc-s
+fftw/2.1.5-gcc          ncl/6.3.0-gcc           openmpi/2.0.2-gcc
+fftw/3.3.6-gcc          nco/4.6.4-gcc-p         tbb/2016.4.072
+gsl/2.3-gcc             nco/4.6.4-gcc-s         udunits/2.2.24-gcc
