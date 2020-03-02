@@ -17,18 +17,20 @@ make.group(fasta=1Nsoil.fasta-A3Nsoil.fasta-B2Nsoil.fasta-C1Nsoil.fasta-HTC3N.fa
 
 
 # Turns fasta with multiple-line sequence to single line sequence for each entry
-awk '!/^>/ { printf "%s", $0; n = "\n" } /^>/ { print n $0; n = "" } END { printf "%s", n }' janton.fasta > janton2.fasta
+awk '!/^>/ { printf "%s", $0; n = "\n" } /^>/ { print n $0; n = "" } END { printf "%s", n }' <  FASTA FILE > NEW FASTA FILE
+
+
+# Outputs entire line after a keyword 
+cat textfile | grep -o "target_string.*"
 
 
 ## Loops over txt file of sample names and creates a new file for each sample name matched to original dataset 
 while read p; do grep $p -A 1 janton2.fasta | grep -v '^--$' > ${p}.fasta; done < id.txt
 
-
 echo 'hd_ma_prod_customer_ro:*:123456789:john.doe' | sed 's/.*://'
-
 for file in *; do echo "$file" | sed 's/.*.//'
-
 for file in *gz; do echo "$file" | sed 's/\./\:/' | mv "${file}" done 
+
 
 
 # Convert RNA to DNA
@@ -49,6 +51,27 @@ sed 's/>.*/&WHATEVERYOUWANT/' file.fa > outfile.fa
 
 # print just a specific column of seq headers 
 awk '{print $1}' file.fa > output.fa
+
+# Extract a set of sequences from fasta 
+grep -A 1 g list.txt sequences.fas > newfile2.fas
+
+# Convert bam to sam 
+samtools view -h -o  D.equinoxialis.sam D.equinoxialis.bam
+
+# Converts lowercase letters to N in fasta file 
+sed -e '/^>/! s/[[:lower:]]/N/g' D.equinoxialis.assembly.sm.fasta > D.equin.sm.hard.fasta
+
+
+# Grep based on file of identifiers and get rid of "--" at the end of output
+grep -A 1 -f gene_order.txt caf1-cds2.fna | grep -v -- '^--$' > NW_002032359.1-1"
+
+
+
+
+
+
+
+
 
 
 
@@ -94,7 +117,7 @@ collapse_nodes <- function(t1, threshold){
 
 sinfo --summarize
 
-check_usage.sh -E -u diler
+check_usage.sh -E -a ac_flyminer -u diler 
 check_usage.sh -a ac_flyminer
 
 sinfo --usage 5290389
@@ -102,7 +125,7 @@ sinfo --usage 5290389
 
 #savio_hpc for jobs requiring less than 24 CPUS in one node 
 
-
+srun --pty -A fc_flyminer -p savio2 -t 00:02:00 bash -i
 
 
 
@@ -122,4 +145,51 @@ srun --partition=general --qos=general --mem=200M --pty bash
 
 
 
-l
+
+
+
+
+########## samtools ################
+
+samtools view -Sb ONTdwill-CAF1dwill.sam > ONTdwill-CAF1dwill.bam
+
+samtools sort ONTdwill-CAF1dwill.sam > ONTdwill-CAF1dwill-sorted.bam
+
+samtools index ONTdwill-CAF1dwill-sorted.bam
+
+
+
+
+
+
+########## Mummer ############
+
+show-coords -r -c -l -L 100 -I 50 promer-job.delta > promer-job.coords
+
+mapview -n 1 -p mapview promer-job.coords
+
+mapview -n 1 -f pdf -p mapview promer-job.coords
+
+mummer -mum -b -c ../D.willistoni.assembly.polished.fasta Dwill-CAF1-mullerA-cat.fasta > mummer.mums
+
+mummerplot -postscript -p mummer mummer.mums
+
+
+
+
+
+########### Box and rclone #############
+
+rclone copy file Box:file
+
+rclone copy Box:admin /global/home/users/paciorek/admin
+
+rclone lsd Box:directory
+
+rclone size Box:
+
+
+
+
+########### Box and rclone #############
+
