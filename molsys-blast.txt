@@ -1,0 +1,250 @@
+lsmodule load R/3.4.1
+R
+
+blast <- data.frame(read.table("blastout.txt"))
+
+
+depth <- data.frame(read.table("depth.txt"))
+
+head(blast)
+
+
+contig name 	depth		position
+name1			1				1
+name1				3			2
+name1
+name2
+name2
+
+
+contig_name		length
+name1 			3
+name2
+name3
+name4
+
+
+newtable <- cbind(length, depth)
+
+plot(length, depth)
+
+aggregate(depth$position, by = list(depth$contig_name), FUN = max)
+
+
+pdf("the name of your file.pdf")
+plot(whatever you are plotting)
+dev.off()
+
+
+
+
+unique_buscos <- unique(blast$V1)
+
+
+top_hits <- list()
+for(i in unique_buscos) {
+	x <- blast[blast$V1 == i,]
+	y <- x[x$V4 == min(x$V4),]
+	top_hits[[i]] <- y
+}
+
+x <- top_hit[[1]]
+x[,1]
+x[,2]
+head(x)
+
+
+
+subseq <- function(x){
+	name <- paste(x[,1], x[,2], sep = "_")
+	seq_range <- c(x[,10], x[,11])
+	command <- paste("module load seqkit;", " seqkit grep --by-name -p ", x[,2], " contigs.fasta ", "| seqkit subseq -r ", min(seq_range), ":" , max(seq_range), " > ", name, sep="")
+	system(command)
+	}
+
+
+lapply(top_hit, FUN = subseq)
+
+
+
+for (i in names(top_hit)) {
+	x <- top_hit[[i]]
+	name <- paste(x[,1], x[,2], sep = "_")
+	seq_range <- c(x[,10], x[,11])
+	command <- paste("module load seqkit;", " seqkit grep --by-name -p ", x[,2], " contigs.fasta ", "| seqkit subseq -r ", min(seq_range), ":" , max(seq_range), " > ", name, sep="")
+	system(command)
+}
+
+
+
+
+
+
+
+
+
+
+
+#!/bin/bash
+#SBATCH --job-name=blastparseR
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH -c 1
+#SBATCH --partition=general
+#SBATCH --qos=general
+#SBATCH --mail-type=END
+#SBATCH --mem=5G
+#SBATCH --mail-user=YOUR-EMAIL-ADDRESS
+#SBATCH -o blastparseR_%j.out
+#SBATCH -e blastparseR_%j.err
+
+module load R
+
+array=(SAMPLE-NAME1 SAMPLE-NAME2 SAMPLE-NAME3 etc)
+
+cd .
+
+for a in "${array[@]}";
+do
+cd /home/CAM/dhaji/molsys
+mkdir ${a}
+mv ${a}_contigs.fasta ${a}
+mv ${a}_blastout.txt ${a}
+cd ${a}
+mv ${a}_blastout.txt blastout.txt
+Rscript blastparseR.r
+sed -i -e 's/>.*/>${a}/' 
+done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+head(blast)
+
+hist(table(blast$V2), breaks = 100)
+
+unique(blast$V1)
+
+aggregate(blast$V2, by = list(blast$V1), FUN = length)
+aggregate(fin$V2, by = list(fin$V1), FUN = length)
+
+
+t <- blast[blast$V1 == "EOG090W04UC",]
+t2 <- 
+
+y <- blast[, colnames(blast) == "V8" |  colnames(blast) == "V9"]
+
+x <- t
+z <- y
+
+
+fin <- c()
+
+for(i in unique(blast$V1)) {
+	
+	a <- blast[blast$V1 == i, ]
+
+	if (dim(a)[1] < 2) {
+		
+		fin <- rbind(fin, a)
+	
+	} else if (dim(a)[1] >= 2) {
+		
+		b <- aggregate(a$V4, by = list(a$V2), min)
+		pick <- as.character(b[b[,2] == min(b[,2]), 1])
+		pick2 <- a[a$V2 == pick,]
+		
+		if (length(pick2$V4) < 2) {
+		
+			pick3 <- pick2[pick2$V4 == min(pick2$V4),]
+			fin <- rbind(fin, pick3)
+	
+		} else if (length(pick2$V4) >= 2) {
+		
+			pick3 <- pick2[pick2$V4 == min(pick2$V4),]
+			pick4 <- pick3[pick3$V5 == max(pick3$V5),]
+			fin <- rbind(fin, pick4)
+	
+		}
+	
+	}	
+	
+	}
+
+fin$V2
+fin$V4
+fin$V2
+
+contigs <- read.fasta("contigs.fasta")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Trash
+
+
+	a <- blast[blast$V1 == i, ]
+	
+	b <- apply(a, 1, function(z){  
+		apply(a[,c(10,11)], 1, function(x){
+			length(intersect(seq(min(x), max(x)), seq(min(z[c(10,11)]), max(z[c(10,11)]))) > 0)
+			})	
+		})
+	
+	p = c()
+	
+	b[upper.tri(b), ] <- NA
+	
+	bb <- rownames(b)
+	
+	for(j in bb) {
+	
+	rownames <- names(b[rownames(b) %in% j,][b[rownames(b) %in% j,] > 100])
+	rownames <- rownames[!is.na(rownames)]
+	sub <- a[rownames(a) %in% rownames,]
+	pick <- as.character(sub[sub$V3 == max(sub$V3),2])
+	p <- c(p, pick)
+	b <- b[, !colnames(b) %in% rownames]
+	
+	}
+	
+	lapply(b[[1]], max)
+	lapply(b[[1]], min)
