@@ -13,3 +13,5 @@ git remote add general https://github.com/DilerHaji/general.git
 git pull general master
 
 git push --force general master
+
+git checkout -b "new branch"

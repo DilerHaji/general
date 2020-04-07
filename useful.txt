@@ -54,7 +54,7 @@ awk '{print $1}' file.fa > output.fa
 
 # Extract a set of sequences from fasta 
 grep -A 1 g list.txt sequences.fas > newfile2.fas
-
+)
 # Convert bam to sam 
 samtools view -h -o  D.equinoxialis.sam D.equinoxialis.bam
 
@@ -64,6 +64,63 @@ sed -e '/^>/! s/[[:lower:]]/N/g' D.equinoxialis.assembly.sm.fasta > D.equin.sm.h
 
 # Grep based on file of identifiers and get rid of "--" at the end of output
 grep -A 1 -f gene_order.txt caf1-cds2.fna | grep -v -- '^--$' > NW_002032359.1-1"
+
+
+
+
+
+
+
+
+########################################
+Python
+########################################
+
+print() 
+
+print(type())	# int, float, str
+
+"string" + "string" = "string string"
+
+"string" * 10 = "stringstringstringstringstringstringstringstringstringstring"
+
+print(len("string"))	# length of string 
+print(max(1, 2))		# max
+print(min('a', '0'))	# min
+round(1.4747, 1) = 1.4	# rounding numbers 
+set						# Unordered collection of unique items 
+
+
+print(1 + int('2'))		# change string to integer
+print(str(1) + '2')		# change integer to string
+print(float(1) + '2')	# change integer to float
+
+print(3 ** 10)			# exponent
+
+//						# whole-number result of division
+%						# remainder from division
+/						# Regular division (float division)
+
+object[0]				# Python starts indexing at 0 !!!! 
+
+[0:4]					# INLCUSIVE on left bracket, EXCLUSIVE on right bracket 
+[:4]					# Everything to the left
+[0:]					# Everything to the right 
+
+
+str.	# String methods 
+.split
+.join
+.replace
+.strip
+.find					
+
+str.upper("something")
+"something".upper()	
+"something".upper().lower()	
+
+len("object".split("\n"))				# Counting tabs (lines)
+len(set("object".lower().split()))		# Counting unique words 
 
 
 
@@ -121,7 +178,6 @@ check_usage.sh -E -a ac_flyminer -u diler
 check_usage.sh -a ac_flyminer
 
 sinfo --usage 5290389
-
 
 #savio_hpc for jobs requiring less than 24 CPUS in one node 
 
